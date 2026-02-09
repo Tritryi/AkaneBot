@@ -1,1 +1,2 @@
 .config
+./cogs/__pycache__/*
