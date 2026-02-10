@@ -53,7 +53,7 @@ class AkaneBot(commands.Bot):
             await message.channel.send(f"Hello {message.author.name} !")
 
         if "akane" in message.content.lower():
-            img = discord.File("./akane.webp")
+            img = discord.File("./img/akane.webp")
             await message.channel.send("On parle de moi ? La best girl", file=img)
 
         # Pour que le bot écoute les commandes et pas seulement les events
