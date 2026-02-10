@@ -1,6 +1,6 @@
 # <img src="./img/presentation.webp" height="60"> Présentation
 
-# Utilité du bot
+# <img src="./img/utility.webp" height="40"> Utilité du bot
 Avant toute chose, je vous invite à vous rendre sur le [Discord Developer Portal](https://discord.com/developers/applications) et cliquer sur "New Application" afin de créer votre bot. Ensuite, libre à vous d'utiliser mon code comme bon vous semble.
 
 Le code que je fournis ici est un code de base pour votre bot discord. Il peut convenir à n'importe quel bot tant que vous en avez créé un (après tout, chacun son bot, je ne donnerai pas accès au mien 🙂). 
@@ -8,7 +8,7 @@ Il propose des fonctions de modération de base (kick, clear, etc.) mais aussi d
 
 Libre à vous de personnaliser le code pour qu'il réagisse à ce que vous voulez, je vous fournis la recette et à vous de faire votre préparation. Notamment, je vous invite à modifier le préfixe de commande, le nom du bot, les images, le statut, enfin tout ce qui fait la personnalité de votre bot ! Ne gardez pas les informations du mien ce n'est pas très utile.
 
-# Préparer le bot
+# <img src="./img/prepare.webp" height="40"> Préparer le bot
 ## Environnement nécessaire
 Afin de pouvoir lancer le bot (éxecuter le script main.py) vous allez devoir vous munir d'un environnement adapté.
 Je conseille d'utiliser un environnement virtuel python, pour ce faire : 
@@ -29,10 +29,10 @@ Dans ce fichier vous devrez utiliser une seule et unique variable d'environnemen
 
 > `DISCORD_TOKEN` le token du bot
 
-## ⚠️ Variables propres à votre utilisation
+## Variables propres à votre utilisation
 Dans le code fourni, à certains endroits on récupère des identifiants de salon notamment avec la fonction `fetch_channel()`, cet identifiant est propre à votre serveur ! Si vous voulez que cela fonctionne à vous de changer cet identifiant.
 
-# Utiliser le bot 
+# 📑 Utiliser le bot 
 Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande suivante : 
 
 >`python3 main.py`
@@ -58,5 +58,5 @@ Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande sui
 - **help.md** : fichier lu par le bot pour expliquer aux utilisateurs son fonctionnement, il contient un ensemble d'explications qui seront envoyés par message privé à un utilisateur en tapant la commande `a!help`.
 - **main.py** : script principal, c'est lui qu'on éxecute pour lancer le bot. Il contient la déclaration du bot, le lancement de celui-ci ainsi que quelques fonctions de base comme répondre aux messages.
 
-# Un bug ?
+# ⁉️ Un bug ?
 En cas de bug n'hésitez pas à ouvrir une [issue](https://github.com/Tritryi/DiscordBot/issues).
