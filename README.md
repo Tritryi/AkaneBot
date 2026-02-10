@@ -1,4 +1,12 @@
 # <img src="./img/presentation.webp" height="60"> Présentation
+**AkaneBot** est un repository qui a pour vocation de fournir une base à tout ceux voulant créer leur propre bot discord pour leur serveur.
+
+Ce repository est né d'une envie personnelle de créer un bot, puis j'ai réalisé que la documentation python et les exemples étaient peu nombreux sur internet. J'ai donc décidé de mettre à disposition une base de code pour construire le bot discord de vos rêves.
+
+**AkaneBot** est un repository sous **license MIT**, vous pouvez utiliser le code librement tant que vous ne modifiez pas la license et que vous me citez !
+
+**AkaneBot** est une application open-source et entièrement écrite en `Python`.
+
 
 # <img src="./img/utility.webp" height="40"> Utilité du bot
 Avant toute chose, je vous invite à vous rendre sur le [Discord Developer Portal](https://discord.com/developers/applications) et cliquer sur "New Application" afin de créer votre bot. Ensuite, libre à vous d'utiliser mon code comme bon vous semble.
