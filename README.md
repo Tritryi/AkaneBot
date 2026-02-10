@@ -6,6 +6,7 @@
 
 # Utilité du bot
 Avant toute chose, je vous invite à vous rendre sur le [Discord Developer Portal](https://discord.com/developers/applications) et cliquer sur "New Application" afin de créer votre bot. Ensuite, libre à vous d'utiliser mon code comme bon vous semble.
+
 Le code que je fournis ici est un code de base pour votre bot discord. Il peut convenir à n'importe quel bot tant que vous en avez créé un (après tout, chacun son bot, je ne donnerai pas accès au mien 🙂). 
 Il propose des fonctions de modération de base (kick, clear, etc.) mais aussi des fonctionnalités plus simples comme réagir à des mots clés.
 
@@ -17,8 +18,11 @@ Afin de pouvoir lancer le bot (éxecuter le script main.py) vous allez devoir vo
 Je conseille d'utiliser un environnement virtuel python, pour ce faire : 
 
 >`python -m venv .venv`
+>
 >`source .venv/bin/activate`
+>
 >`pip install -U discord.py`
+>
 >`pip install python-dotenv`
 
 Avec tout cela, votre environnement python est prêt.
