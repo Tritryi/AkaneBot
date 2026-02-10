@@ -9,7 +9,7 @@ Il propose des fonctions de modération de base (kick, clear, etc.) mais aussi d
 Libre à vous de personnaliser le code pour qu'il réagisse à ce que vous voulez, je vous fournis la recette et à vous de faire votre préparation. Notamment, je vous invite à modifier le préfixe de commande, le nom du bot, les images, le statut, enfin tout ce qui fait la personnalité de votre bot ! Ne gardez pas les informations du mien ce n'est pas très utile.
 
 # <img src="./img/prepare.webp" height="40"> Préparer le bot
-## Environnement nécessaire
+### Environnement nécessaire
 Afin de pouvoir lancer le bot (éxecuter le script main.py) vous allez devoir vous munir d'un environnement adapté.
 Je conseille d'utiliser un environnement virtuel python, pour ce faire : 
 
@@ -23,13 +23,13 @@ Je conseille d'utiliser un environnement virtuel python, pour ce faire :
 
 Avec tout cela, votre environnement python est prêt.
 
-## Variables d'environnement
+### Variables d'environnement
 Le code fournit propose d'aller chercher les variables d'environnement dans un fichier nommé `.config`
 Dans ce fichier vous devrez utiliser une seule et unique variable d'environnement : 
 
 > `DISCORD_TOKEN` le token du bot
 
-## Variables propres à votre utilisation
+### Variables propres à votre utilisation
 Dans le code fourni, à certains endroits on récupère des identifiants de salon notamment avec la fonction `fetch_channel()`, cet identifiant est propre à votre serveur ! Si vous voulez que cela fonctionne à vous de changer cet identifiant.
 
 # 📑 Utiliser le bot 
@@ -41,7 +41,7 @@ Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande sui
 
 
 
-## Structure du code
+### Structure du code
 
 ```
 ./
