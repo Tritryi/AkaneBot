@@ -1,4 +1,4 @@
-# <img src="presentation" height="60"> Présentation
+# <img src="presentation.webp" height="60"> Présentation
 
 # Utilité du bot
 Avant toute chose, je vous invite à vous rendre sur le [Discord Developer Portal](https://discord.com/developers/applications) et cliquer sur "New Application" afin de créer votre bot. Ensuite, libre à vous d'utiliser mon code comme bon vous semble.
