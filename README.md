@@ -45,15 +45,16 @@ Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande sui
 
 ```
 ./
-    cogs/ 
+    cogs/
+    img/
     .gitignore
     akane.webp
     help.md
     main.py
 ```
 - **cogs/** : ensemble de fichiers python permettant de définir les commandes du bot, on range les commandes par catégories.
+- **img/** : dossiers des images, vous pouvez en changer le contenu elles sont là à titre d'exemple comme pour faire envoyer une image au bot et illustrer ce repository.
 - **.gitignore** : proposition de gitignore, à vous de le changer comme vous le voulez.
-- **akane.webp** : simple image pour illustrer l'envoi d'images avec le bot, vous pouvez la modifier.
 - **help.md** : fichier lu par le bot pour expliquer aux utilisateurs son fonctionnement, il contient un ensemble d'explications qui seront envoyés par message privé à un utilisateur en tapant la commande `a!help`.
 - **main.py** : script principal, c'est lui qu'on éxecute pour lancer le bot. Il contient la déclaration du bot, le lancement de celui-ci ainsi que quelques fonctions de base comme répondre aux messages.
 
