@@ -1,8 +1,4 @@
-# FIXME 
-- organiser le code du bot : ranger les commandes par catégories dans diff fichiers
-- créer une classe pour le bot
-
-# Présentation
+# <img src="presentation" height="40"> Présentation
 
 # Utilité du bot
 Avant toute chose, je vous invite à vous rendre sur le [Discord Developer Portal](https://discord.com/developers/applications) et cliquer sur "New Application" afin de créer votre bot. Ensuite, libre à vous d'utiliser mon code comme bon vous semble.
