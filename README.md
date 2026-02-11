@@ -12,16 +12,16 @@ Ce repository est né d'une envie personnelle de créer un bot, puis j'ai réali
 Avant toute chose, je vous invite à vous rendre sur le [Discord Developer Portal](https://discord.com/developers/applications) et cliquer sur "New Application" afin de créer votre bot. Ensuite, libre à vous d'utiliser mon code comme bon vous semble.
 
 Le code que je fournis ici est un code de base pour votre bot discord. Il peut convenir à n'importe quel bot tant que vous en avez créé un (après tout, chacun son bot, je ne donnerai pas accès au mien 🙂). 
-Il propose des fonctions de modération de base (kick, clear, etc.) mais aussi des fonctionnalités plus simples comme réagir à des mots clés.
+Il propose des fonctions de modération de base (kick, clear, etc.) mais aussi des fonctionnalités plus simples comme réagir à des mots clés ou changer son statut.
 
-Libre à vous de personnaliser le code pour qu'il réagisse à ce que vous voulez, je vous fournis la recette et à vous de faire votre préparation. Notamment, je vous invite à modifier le préfixe de commande, le nom du bot, les images, le statut, enfin tout ce qui fait la personnalité de votre bot ! Ne gardez pas les informations du mien ce n'est pas très utile.
+Libre à vous de personnaliser le code pour qu'il réagisse à ce que vous voulez, je vous fournis la recette et à vous de faire votre préparation. En particulier, je vous invite à modifier le préfixe de commande, le nom du bot, les images, le statut, enfin tout ce qui fait la personnalité de votre bot ! Ne gardez pas les informations du mien ce n'est pas très utile.
 
 # <img src="./img/prepare.webp" height="40"> Préparer le bot
-### Environnement nécessaire
+### Environnement nécessaire (Linux)
 Afin de pouvoir lancer le bot (éxecuter le script main.py) vous allez devoir vous munir d'un environnement adapté.
 Je conseille d'utiliser un environnement virtuel python, pour ce faire : 
 
->`python -m venv .venv`
+>`python3 -m venv .venv`
 >
 >`source .venv/bin/activate`
 >
@@ -31,8 +31,16 @@ Je conseille d'utiliser un environnement virtuel python, pour ce faire :
 
 Avec tout cela, votre environnement python est prêt.
 
+### Environnement nécessaire (Windows)
+Pour Windows, nous allons réaliser globalement les mêmes manipulations que sur Linux : 
+>
+>
+>
+>
+>
+
 ### Variables d'environnement
-Le code fournit propose d'aller chercher les variables d'environnement dans un fichier nommé `.config`
+Le code fournit propose d'aller chercher les variables d'environnement dans un fichier nommé `.config` que vous devrez créer vous même.
 Dans ce fichier vous devrez utiliser une seule et unique variable d'environnement : 
 
 > `DISCORD_TOKEN` le token du bot
@@ -45,7 +53,7 @@ Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande sui
 
 >`python3 main.py`
 
-⚠️ Le bot n'est actif que lorsque votre script tourne !!
+⚠️ Le bot n'est actif que lorsque votre script tourne !! Si vous coupez le script ou éteignez votre ordinateur, le bot sera instantanément hors ligne.
 
 
 
@@ -56,7 +64,6 @@ Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande sui
     cogs/
     img/
     .gitignore
-    akane.webp
     help.md
     main.py
 ```
