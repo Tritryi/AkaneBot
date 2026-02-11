@@ -12,12 +12,13 @@ class UtilitairesMod(commands.Cog):
     @commands.bot_has_permissions(manage_messages=True)
     async def clear(self,ctx,number: int = 0):
         """
-        Clear x messages dans le salon où c'est demandé si l'utilisateur a le droit de gérer des messages.
+        Clear x messages dans le salon où c'est demandé si l'utilisateur ET le bot ont le droit de gérer des messages.
         Limit +1 pour aussi supprimer la commande elle-même
 
         Arguments : 
             number : nombre de messages à supprimer
         """
+        # Si l'utilisateur n'a pas donné de nombre de messages, le bot crash, donc on vérifie cela.
         if number == 0:
             ctx.send("Il me faut un nombre de messages !", delete_after=2)
             return
