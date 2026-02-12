@@ -4,7 +4,7 @@ import os, datetime
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=".config")
 
-
+# FIXME GENERAL : AJOUTER DES TRY-CATCH UN PEU PARTOUT POUR LA PROPRETÉ DU CODE
 class AkaneBot(commands.Bot):
     def __init__(self):
         # Activer les intents pour que le bot suive ce qui se passe sur le serveur
@@ -81,6 +81,28 @@ class AkaneBot(commands.Bot):
         # Ici, on mentionne l'utilisateur (id obligatoire !) et on utilise un emoji personnalisé
         # Pour les emojis personnalisés : "Emojis" sur votre discord developer portal, nom_emoji:id_emoji
         await channel_welcome.send(f"<@{member.id}> nous a rejoint ! Bienvenu !! <:akane_smile:1471298088860913674>")
+
+    # FIXME : CETTE FONCTION N'A PAS ENCORE ÉTÉ TESTÉE
+    async def on_member_remove(self,member: discord.User):
+        """
+        Permet de faire réagir le bot au départ d'un membre. On envoie un message de d'au revoir dans le général et
+        un log pour les modérateurs indiquant qui est parti quand.
+        """
+        # Récupération  des channels et de la date
+        channel_log = await self.fetch_channel(1051971103217684572)
+        channel_welcome = await self.fetch_channel(792013504969310258)
+        date = datetime.datetime.now("%d/%m%/%Y %H:%M")
+        # Création du embed pour les logs
+        embed_log = discord.Embed(
+            title=f"Départ du membre {member.name}",
+            description=f"<@{member.id}> a rejoint le serveur {date}",
+            color=discord.Color.from_rgb(240,45,38)
+        )
+        # Envoie des messages dans les channels respectifs
+        await channel_log.send(embed=embed_log)
+        # Ici, on mentionne l'utilisateur (id obligatoire !) et on utilise un emoji personnalisé
+        # Pour les emojis personnalisés : "Emojis" sur votre discord developer portal, nom_emoji:id_emoji
+        await channel_welcome.send(f"<@{member.id}> nous a malheureusement quittés... <:akane_cry:1471304232605847839>")
 
     
     
