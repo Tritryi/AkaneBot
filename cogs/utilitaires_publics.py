@@ -52,7 +52,7 @@ class UtilitairesPublics(commands.Cog):
         # Création du embed 
         embed = discord.Embed(
             title="🤔 Qui est Akane ?",
-            color=discord.Color.dark_blue()
+            color=discord.Color.from_rgb(69,56,90)
         )
         # Ajout du thumbnail et de l'image
         embed.set_thumbnail(url="attachment://logo.webp")

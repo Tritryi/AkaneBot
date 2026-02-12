@@ -26,7 +26,7 @@ class Moderation(commands.Cog):
         # On essaie de kick l'utilisateur
         try:
             await user.kick(reason=reason)
-            await ctx.send(f"{user.name} a été expulsée !!!")
+            await ctx.send(f"{user.name} a été expulsé(e) !!!")
 
             # Si l'utilisateur a pu être kick, on log cela dans le channel de notre choix
             try:
@@ -34,7 +34,7 @@ class Moderation(commands.Cog):
                 embed = discord.Embed(
                     title="📛 Expulsion de membre",
                     description=f"**{user.name}** a été expulsé(e) pour cause de **{reason}**",
-                    color=discord.Color.dark_blue()
+                    color=discord.Color.from_rgb(156,14,2)
                 )   
                 await channel.send(embed=embed)
 
