@@ -69,11 +69,11 @@ class AkaneBot(commands.Bot):
         # Récupération  des channels et de la date
         channel_log = await self.fetch_channel(1051971103217684572)
         channel_welcome = await self.fetch_channel(792013504969310258)
-        date = datetime.datetime.now("%d/%m%/%Y %H:%M")
+        date = datetime.datetime.now()
         # Création du embed pour les logs
         embed_log = discord.Embed(
             title=f"Arrivée du membre {member.name}",
-            description=f"<@{member.id}> a rejoint le serveur {date}",
+            description=f"<@{member.id}> a rejoint le serveur {date.strftime("%d/%m%/%Y %H:%M")}",
             color=discord.Color.from_rgb(61,247,32)
         )
         # Envoie des messages dans les channels respectifs
@@ -82,7 +82,7 @@ class AkaneBot(commands.Bot):
         # Pour les emojis personnalisés : "Emojis" sur votre discord developer portal, nom_emoji:id_emoji
         await channel_welcome.send(f"<@{member.id}> nous a rejoint ! Bienvenu !! <:akane_smile:1471298088860913674>")
 
-    # FIXME : CETTE FONCTION N'A PAS ENCORE ÉTÉ TESTÉE
+    
     async def on_member_remove(self,member: discord.User):
         """
         Permet de faire réagir le bot au départ d'un membre. On envoie un message de d'au revoir dans le général et
@@ -91,11 +91,11 @@ class AkaneBot(commands.Bot):
         # Récupération  des channels et de la date
         channel_log = await self.fetch_channel(1051971103217684572)
         channel_welcome = await self.fetch_channel(792013504969310258)
-        date = datetime.datetime.now("%d/%m%/%Y %H:%M")
+        date = datetime.datetime.now()
         # Création du embed pour les logs
         embed_log = discord.Embed(
             title=f"Départ du membre {member.name}",
-            description=f"<@{member.id}> a rejoint le serveur {date}",
+            description=f"<@{member.id}> a quitté le serveur le {date.strftime("%d/%m/%Y %H:%M")}",
             color=discord.Color.from_rgb(240,45,38)
         )
         # Envoie des messages dans les channels respectifs
