@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import os
+import os, datetime
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=".config")
 
@@ -9,6 +9,7 @@ class AkaneBot(commands.Bot):
     def __init__(self):
         # Activer les intents pour que le bot suive ce qui se passe sur le serveur
         intents = discord.Intents.default()
+        intents.members = True
         # Ici pour qu'il lise les messages des utilisateurs (répondre à des pattern, des commandes)
         intents.message_content = True
         super().__init__(command_prefix="a!", intents=intents)
@@ -58,6 +59,20 @@ class AkaneBot(commands.Bot):
 
         # Pour que le bot écoute les commandes et pas seulement les events
         await bot.process_commands(message)
+
+    
+    async def on_member_join(self,member: discord.User):
+        channel_log = await self.fetch_channel(1051971103217684572)
+        channel_welcome = await self.fetch_channel(792013504969310258)
+
+        embed_log = discord.Embed(
+            title=f"Arrivée du membre {member.name}",
+            description=f"<@{member.id}> a rejoint le serveur {datetime.datetime.now()}",
+            color=discord.Color.from_rgb(61,247,32)
+        )
+
+        await channel_log.send(embed=embed_log)
+        await channel_welcome.send(f"<@{member.id}> nous a rejoint ! Bienvenu !! <:akane_smile:1471298088860913674>")
 
     
     
