@@ -21,7 +21,7 @@ class UtilitairesPublics(commands.Cog):
         embed = discord.Embed(
             title="📖 Guide d'utilisation d'Akane <:akane_think:1469869490249531564>",
             description=helpcontent,
-            color=discord.Color.blue()
+            color=discord.Color.from_rgb(63,60,107)
         )
         await ctx.send("Je t'ai envoyé l'aide en mp !", delete_after=2)
         await ctx.author.send(embed=embed)
@@ -52,7 +52,7 @@ class UtilitairesPublics(commands.Cog):
         # Création du embed 
         embed = discord.Embed(
             title="🤔 Qui est Akane ?",
-            color=discord.Color.from_rgb(69,56,90)
+            color=discord.Color.from_rgb(63,60,107)
         )
         # Ajout du thumbnail et de l'image
         embed.set_thumbnail(url="attachment://logo.webp")
