@@ -1,4 +1,6 @@
 import discord
+import datetime
+from datetime import timedelta
 from discord.ext import commands
 
 
@@ -32,7 +34,7 @@ class Moderation(commands.Cog):
             try:
                 channel = await self.bot.fetch_channel(1051971103217684572)
                 embed = discord.Embed(
-                    title="📛 Expulsion de membre",
+                    title="📛 Expulsion d'un membre",
                     description=f"**{user.name}** a été expulsé(e) pour cause de **{reason}**",
                     color=discord.Color.from_rgb(156,14,2)
                 )   
@@ -52,6 +54,95 @@ class Moderation(commands.Cog):
             await user.send(f"Tu as été expulsé de {ctx.guild.name} car {reason}. Désolée :-(")
         except discord.HTTPException:
             print("Impossible de dm cet utilisateur")
+
+    @commands.command()
+    @commands.has_permissions(moderate_members=True)
+    @commands.bot_has_permissions(moderate_members=True)
+    async def mute (self, ctx, user:discord.Member, until:int = 10 , *, reason="Raison indéfinie"):
+        """
+        Mute un membre. Commande utilisable si : le bot et l'utilisateur peut modérer les membres ET le bot a un rôle 
+        plus élevé que la cible. Comme le kick on log l'action par contre pas de message à l'utilisateur car il peut lire 
+        pourquoi il est mute.
+
+        Arguments:
+            user : utilisateur à mute
+            until : durée EN MINUTES durant laquelle l'utilisateur doit être mute. Maximum 28 jours soit 40320 minutes
+            reaso : raison du mute
+        """
+        if user.top_role >= ctx.me.top_role:
+            return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
+        
+        # duree : temps en minute du mute
+        # time_fin : calcule la date de fin du mute car discord a besoin de ça 
+        duree = timedelta(minutes=until)
+        time_fin = datetime.datetime.now(datetime.timezone.utc) + duree
+            
+        try:
+            # timeout l'utilisateur et envoie une notification   
+            await user.timeout(time_fin, reason=reason)
+            await ctx.send(f"{user.name} a été mute...")
+
+            try:
+                # permet de log le mute
+                channel_log = await self.bot.fetch_channel(1051971103217684572)
+                embed = discord.Embed(
+                    title="🔇 Membre timeout",
+                    description=f"**{user.name}** a été timeout pendant {until} minutes",
+                    color= discord.Color.from_rgb(71,2,87)
+                )
+                await channel_log.send(embed=embed)
+
+            # exception en cas de channel non trouvé
+            except discord.NotFound:
+                await ctx.send("Je n'ai pas réussi à logger l'action...")
+                print("Le timeout a fonctionné mais impossible de trouver le channel de log")
+
+        # exceptions en cas de soucis sur le timeout
+        except discord.HTTPException as e:
+            await ctx.send("Je n'ai pas réussi à effectuer le timeout...")
+            print(f"Une erreur est survenue du côté de discord : {e}")
+        except TypeError as e :
+            await ctx.send("Un problème dans la définition de la date, demandez à l'administrateur...")
+            print(f"La date passée n'a pas un fuseau horaire bien défini : {e}")
+
+    @commands.command()
+    @commands.has_permissions(moderate_members=True)
+    @commands.bot_has_permissions(moderate_members=True)
+    async def unmute (self, ctx, user:discord.Member):
+        """
+        Désactiver le timeout d'un utilisateur (par exemple en cas de fausse manip), pas besoin de raison mais on peut en 
+        ajouter une (l'argument) et l'afficher si besoin. La valeur par défaut permet de faire en sorte que la commande 
+        fonctionne. De plus, pas besoin de vérifier que l'utilisateur a un rôle supérieur. On log l'action comme toujours
+
+        Arguments:
+            user: membre à unmute
+        """
+        try:
+            # pour unmute, on utilise timeout avec une durée valant 0
+            await user.timeout(None, reason="none")
+            await ctx.send(f"{user.name}, tu as été demute ! Désolé pour le derangement...")
+            
+            # évidemment on log l'action
+            try:
+                channel_log = await self.bot.fetch_channel(1051971103217684572)
+                embed = discord.Embed(
+                    title="🔈 Membre untimeout",
+                    description=f"**{user.name}** a été untimeout",
+                    color= discord.Color.from_rgb(215,72,247)
+                )
+                await channel_log.send(embed=embed)
+
+            # problème de channel comme d'habitude
+            except discord.NotFound:
+                await ctx.send("Je n'ai pas réussi à logger l'action...")
+                print("Le timeout a fonctionné mais impossible de trouver le channel de log")
+
+        # exception générale si le untimeout ne réussit pas
+        except discord.HTTPException as e:
+            await ctx.send("Le untimeout n'a pas fonctionné")
+            print(f"Une erreur est survenue du côté de discord : {e}")
+        
+
 
     
 async def setup(bot):
