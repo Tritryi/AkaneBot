@@ -23,7 +23,7 @@ class UtilitairesPublics(commands.Cog):
             description=helpcontent,
             color=discord.Color.from_rgb(63,60,107)
         )
-        await ctx.send("Je t'ai envoyé l'aide en mp !", delete_after=2)
+        await ctx.send("Je t'ai envoyé l'aide en mp !", delete_after=2) 
         await ctx.author.send(embed=embed)
 
     @commands.command()
