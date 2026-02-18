@@ -100,6 +100,13 @@ class UtilitairesMod(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self,payload):
+        """
+        Event listener pour l'ajout de réactions sur notre message de setup_roles (voir fonction précédente). Si la réaction est ajoutée
+        sur notre message alors on s'occupe d'ajouter des rôles à l'utilisateur.
+
+        Arguments : 
+            payload : il s'agit d'un ensemble d'informations envoyées par discord à chaque fois qu'une réaction est ajoutée sur un message
+        """
         # chargement des variables
         config = self.get_config()
         msg_id = config["role_message_id"]
