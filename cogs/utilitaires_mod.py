@@ -1,22 +1,10 @@
 import discord
-import json
 from discord.ext import commands
 
 
 class UtilitairesMod(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
-
-    def get_config(self):
-        with open(self.bot.config_path, 'r') as f:
-            return json.load(f)
-        
-    def update_config(self, key, value):
-        data = self.get_config()
-        data[key] = value
-        with open(self.bot.config_path, 'w') as f:
-            json.dump(data, f, indent=4)
-
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -48,7 +36,7 @@ class UtilitairesMod(commands.Cog):
             aucun
         """
         # chargement des variables depuis le fichier json
-        config = self.get_config()
+        config = self.bot.get_config()
         msg_id = config["role_message_id"]
         channel_id = config["role_channel_id"]
         
@@ -108,7 +96,7 @@ class UtilitairesMod(commands.Cog):
             payload : il s'agit d'un ensemble d'informations envoyées par discord à chaque fois qu'une réaction est ajoutée sur un message
         """
         # chargement des variables
-        config = self.get_config()
+        config = self.bot.get_config()
         msg_id = config["role_message_id"]
         ch_id = config["role_channel_id"]
         emoji_id = config["emoji_role_id"]
