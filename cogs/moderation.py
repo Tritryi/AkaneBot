@@ -1,5 +1,5 @@
 import discord
-import datetime
+import datetime, json
 from datetime import timedelta
 from discord.ext import commands
 
@@ -7,6 +7,11 @@ from discord.ext import commands
 class Moderation(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
+
+    def get_config(self):
+        with open(self.bot.config_path, 'r') as f:
+            return json.load(f)
+
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
@@ -21,6 +26,8 @@ class Moderation(commands.Cog):
             * : permet de traiter user comme un argument[1] et reason comme une chaine avec espaces
             reason : pourquoi l'utilisateur est expulsé
         """
+        config = self.get_config()
+        channel_id = config["channel_log_id"]
         # Vérification que le rôle du bot est au dessus de l'utilisateur à kick
         if user.top_role >= ctx.me.top_role:
             return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
@@ -32,7 +39,7 @@ class Moderation(commands.Cog):
 
             # Si l'utilisateur a pu être kick, on log cela dans le channel de notre choix
             try:
-                channel = await self.bot.fetch_channel(1051971103217684572)
+                channel = await self.bot.fetch_channel(channel_id)
                 embed = discord.Embed(
                     title="📛 Expulsion d'un membre",
                     description=f"**{user.name}** a été expulsé(e) pour cause de **{reason}**",
@@ -69,6 +76,8 @@ class Moderation(commands.Cog):
             until : durée EN MINUTES durant laquelle l'utilisateur doit être mute. Maximum 28 jours soit 40320 minutes
             reaso : raison du mute
         """
+        config = self.get_config()
+        channel_id = config["channel_log_id"]
         if user.top_role >= ctx.me.top_role:
             return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
         
@@ -84,7 +93,7 @@ class Moderation(commands.Cog):
 
             try:
                 # permet de log le mute
-                channel_log = await self.bot.fetch_channel(1051971103217684572)
+                channel_log = await self.bot.fetch_channel(channel_id)
                 embed = discord.Embed(
                     title="🔇 Membre timeout",
                     description=f"**{user.name}** a été timeout pendant {until} minutes",
@@ -117,6 +126,8 @@ class Moderation(commands.Cog):
         Arguments:
             user: membre à unmute
         """
+        config = self.get_config()
+        channel_id = config["channel_log_id"]
         try:
             # pour unmute, on utilise timeout avec une durée valant 0
             await user.timeout(None, reason="none")
@@ -124,7 +135,7 @@ class Moderation(commands.Cog):
             
             # évidemment on log l'action
             try:
-                channel_log = await self.bot.fetch_channel(1051971103217684572)
+                channel_log = await self.bot.fetch_channel(channel_id)
                 embed = discord.Embed(
                     title="🔈 Membre untimeout",
                     description=f"**{user.name}** a été untimeout",
