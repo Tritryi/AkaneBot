@@ -25,7 +25,6 @@ class UtilitairesMod(commands.Cog):
         await ctx.send(f"✅ J'ai supprimé {number} messages", delete_after=3)
 
 
-    # FIXME: test fonctionnel à effectuer ICI
     @commands.command()
     @commands.bot_has_permissions(add_reactions=True)
     async def setup_roles(self,ctx):

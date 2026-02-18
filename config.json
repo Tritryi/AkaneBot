@@ -1,15 +1,15 @@
 {
     "channel_log_id": 1051971103217684572,
     "channel_welcome_id": 792013504969310258,
-    "role_message_id": 1473748455946977391,
+    "role_message_id": 1473816052587823297,
     "role_channel_id": 972935312156291202,
     "emoji_role_id": 966507969091084308,
     "id_role1": 861656194816147476,
     "id_role2": 861267749539545100,
     "status": {
-        "1":"I'm on your side, no matter what happens",
-        "2":"En pleine répétition",
-        "3":"Just chillin'",
-        "4":"Eating some apples"
+        "1": "I'm on your side, no matter what happens",
+        "2": "En plein cours de theatre",
+        "3": "Just chillin'",
+        "4": "Eating some apples"
     }
 }
