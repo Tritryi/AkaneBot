@@ -24,6 +24,8 @@ class UtilitairesMod(commands.Cog):
         await ctx.channel.purge(limit=number+1)
         await ctx.send(f"✅ J'ai supprimé {number} messages", delete_after=3)
 
+
+    # FIXME: test fonctionnel à effectuer ICI
     @commands.command()
     @commands.bot_has_permissions(add_reactions=True)
     async def setup_roles(self,ctx):
@@ -66,7 +68,7 @@ class UtilitairesMod(commands.Cog):
                 color=discord.Color.from_rgb(237,100,26)
             )
             role_msg = await channel.send(embed=embed_role)
-            self.update_config("role_message_id",role_msg.id)
+            self.bot.update_config("role_message_id",role_msg.id)
         except discord.HTTPException as e :
             print(f"L'envoi du message a échoué : {e}")
         # le bot n'a pas ces permissions
