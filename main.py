@@ -7,6 +7,8 @@ load_dotenv(dotenv_path=".config")
 # FIXME GENERAL : AJOUTER DES TRY-CATCH UN PEU PARTOUT POUR LA PROPRETÉ DU CODE
 class AkaneBot(commands.Bot):
     def __init__(self):
+        # Config relatives à certaines variables du code
+        self.config_path = "./config.json"
         # Activer les intents pour que le bot suive ce qui se passe sur le serveur
         intents = discord.Intents.default()
         intents.members = True
