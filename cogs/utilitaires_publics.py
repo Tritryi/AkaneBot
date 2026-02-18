@@ -1,10 +1,17 @@
 import discord
-from discord.ext import commands
+import random
+from discord.ext import commands, tasks
 
 
 class UtilitairesPublics(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
+        # pour que la task soit lancée
+        self.change_status.start()
+
+    def cog_unload(self):
+        # couper la task en même temps que le cog
+        self.change_status.cancel()
 
     @commands.command(name="help")
     async def help(self,ctx):
@@ -62,6 +69,31 @@ class UtilitairesPublics(commands.Cog):
             embed.add_field(name=new_data,value=datas[new_data],inline=False)
 
         await ctx.send(embed=embed,files=files_to_send)
+
+    @tasks.loop(hours=4.0)
+    async def change_status(self):
+        """
+        Task qui a lieu une fois toutes les 4h. Permet simplement de changer le statut du bot parmis 4 status random définis dans le json.
+        Nécessite le before_loop pour fonctionner puisqu'il utilise self.bot !!
+        """
+        config = self.bot.get_config()
+        status_list = config["status"]
+        status_text = random.choice(list(status_list.values()))
+        activite = discord.Game(name=status_text)
+        print(status_text)
+
+        await self.bot.change_presence(status=discord.Status.online,activity=activite)
+       
+
+    @change_status.before_loop
+    async def before_change_status(self):
+        """
+        Dit à discord : attend que le bot soit prêt avant de lancer change_status. Sans ça, on a une erreur car la task se lance avant que l'objet
+        bot soit créé.
+        """
+        #print("attente que le bot soit prêt...")
+        await self.bot.wait_until_ready()
+
 
     
     
