@@ -7,6 +7,16 @@ class UtilitairesMod(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
 
+    def get_config(self):
+        with open(self.bot.config_path, 'r') as f:
+            return json.load(f)
+        
+    def update_config(self, key, value):
+        data = self.get_config()
+        data[key] = value
+        with open(self.bot.config_path, 'w') as f:
+            json.dump(data, f, indent=4)
+
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
@@ -30,29 +40,53 @@ class UtilitairesMod(commands.Cog):
     @commands.bot_has_permissions(add_reactions=True)
     async def setup_roles(self,ctx):
         """
+        Permet d'envoyer le message d'association de rôles. Ici on a simplement un embed avec un rôle qui permet de devenir 
+        membre du serveur. Cette fonction utilise des fonctionnalités Python un peu plus complexe comme aller chercher des variables dans un fichier json.
+        Pour comprendre tout cela, référez vous au README ou au dépôt github.
+
+        Arguments :
+            aucun
         """
+        # chargement des variables depuis le fichier json
+        config = self.get_config()
+        msg_id = config["role_message_id"]
+        channel_id = config["role_channel_id"]
+        
+        # récupération du channel, fin s'il n'est pas trouvé
+        channel = await self.bot.fetch_channel(channel_id)
+        if not channel:
+            print("Salon introuvable")
+            return
+
+        # on regarde si ce message existe déjà, si c'est le cas la fonction s'arrête
         try:
-            channel = await self.bot.fetch_channel(972935312156291202)
+            msg = await channel.fetch_message(msg_id)
+            await channel.send("Ce setup a déjà été fait !")
+            return
 
-            try:
-                msg = await channel.fetch_message(1473461649498439711)
+        # cas où le setup n'a pas encore été fait, on catch l'erreur pour éviter des messages rouges ;)
+        except discord.NotFound:
+            print(f"Le message n'existe pas ou a été supprimé. On le renvoi.")
+        except discord.Forbidden as e:
+            print(f"Permissions insuffisantes pour récupérer le message : {e}.")
 
-            except discord.NotFound as e:
-                print(f"Le message n'existe pas ou a été supprimé. On le renvoi.")
-
-
+        # création du message, envoi et update de la configuration (on change l'identifiant du message)
+        try:
             embed_role = discord.Embed(
                 title="Bienvenu ! Pour accéder au contenu du serveur veuillez vous attribuer le rôle",
                 description="Cliquez sur l'emoji pour devenir un Titan déviant et accéder au serveur",
                 color=discord.Color.from_rgb(237,100,26)
             )
             role_msg = await channel.send(embed=embed_role)
+            self.update_config("role_message_id",role_msg.id)
         except discord.HTTPException as e :
             print(f"L'envoi du message a échoué : {e}")
-
+        # le bot n'a pas ces permissions
         except discord.Forbidden as e:
             print(f"Permissions nécessaires insuffisantes : {e}")
 
+        # ajout de la réaction et toutes les erreurs que cela peut supposer
+        # ici il y a un emoji personnalisé, sinon vous mettez simplement quelque chose comme '🤓'
         try:
             await role_msg.add_reaction('rin:966507969091084308')
         except discord.HTTPException as e:
