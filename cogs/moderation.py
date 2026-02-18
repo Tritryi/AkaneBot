@@ -1,5 +1,5 @@
 import discord
-import datetime, json
+import datetime
 from datetime import timedelta
 from discord.ext import commands
 
@@ -7,10 +7,6 @@ from discord.ext import commands
 class Moderation(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
-
-    def get_config(self):
-        with open(self.bot.config_path, 'r') as f:
-            return json.load(f)
 
 
     @commands.command()
@@ -26,12 +22,18 @@ class Moderation(commands.Cog):
             * : permet de traiter user comme un argument[1] et reason comme une chaine avec espaces
             reason : pourquoi l'utilisateur est expulsé
         """
-        config = self.get_config()
+        config = self.bot.get_config()
         channel_id = config["channel_log_id"]
         # Vérification que le rôle du bot est au dessus de l'utilisateur à kick
         if user.top_role >= ctx.me.top_role:
             return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
         
+        # Enfin, on prévient l'utilisateur si ses dm sont ouverts
+        try:
+            await user.send(f"Tu as été expulsé de {ctx.guild.name} car {reason}. Désolée :-(")
+        except discord.HTTPException as e:
+            print(f"Impossible de dm cet utilisateur : {e}")
+
         # On essaie de kick l'utilisateur
         try:
             await user.kick(reason=reason)
@@ -56,11 +58,7 @@ class Moderation(commands.Cog):
         except discord.HTTPException:
             await ctx.send("Je n'ai pas réussi à l'expulser...")
 
-        # Enfin, on prévient l'utilisateur si ses dm sont ouverts
-        try:
-            await user.send(f"Tu as été expulsé de {ctx.guild.name} car {reason}. Désolée :-(")
-        except discord.HTTPException:
-            print("Impossible de dm cet utilisateur")
+        
 
     @commands.command()
     @commands.has_permissions(moderate_members=True)
@@ -76,7 +74,7 @@ class Moderation(commands.Cog):
             until : durée EN MINUTES durant laquelle l'utilisateur doit être mute. Maximum 28 jours soit 40320 minutes
             reaso : raison du mute
         """
-        config = self.get_config()
+        config = self.bot.get_config()
         channel_id = config["channel_log_id"]
         if user.top_role >= ctx.me.top_role:
             return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
@@ -126,7 +124,7 @@ class Moderation(commands.Cog):
         Arguments:
             user: membre à unmute
         """
-        config = self.get_config()
+        config = self.bot.get_config()
         channel_id = config["channel_log_id"]
         try:
             # pour unmute, on utilise timeout avec une durée valant 0
