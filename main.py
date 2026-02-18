@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-import os, datetime
+import os, datetime, json
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=".config")
 
@@ -22,6 +22,17 @@ class AkaneBot(commands.Bot):
         # Récupérer le contenu de help
         with open("help.md") as f:
             self.helpcontent = f.read()
+        
+    def get_config(self):
+        with open(self.config_path, 'r') as f:
+            return json.load(f)
+        
+    def update_config(self, key, value):
+        data = self.get_config()
+        data[key] = value
+        with open(self.config_path, 'w') as f:
+            json.dump(data, f, indent=4)
+
 
     async def setup_hook(self):
         for file in os.listdir("./cogs"):
@@ -70,6 +81,7 @@ class AkaneBot(commands.Bot):
         un log pour les modérateurs indiquant qui est arrivé quand.
         """
         # Récupération  des channels et de la date
+        # FIXME : utiliser get_config
         channel_log = await self.fetch_channel(1051971103217684572)
         channel_welcome = await self.fetch_channel(792013504969310258)
         date = datetime.datetime.now()
@@ -92,6 +104,7 @@ class AkaneBot(commands.Bot):
         un log pour les modérateurs indiquant qui est parti quand.
         """
         # Récupération  des channels et de la date
+        # FIXME : utiliser get_config
         channel_log = await self.fetch_channel(1051971103217684572)
         channel_welcome = await self.fetch_channel(792013504969310258)
         date = datetime.datetime.now()
