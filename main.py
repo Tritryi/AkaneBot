@@ -81,9 +81,12 @@ class AkaneBot(commands.Bot):
         un log pour les modérateurs indiquant qui est arrivé quand.
         """
         # Récupération  des channels et de la date
-        # FIXME : utiliser get_config
-        channel_log = await self.fetch_channel(1051971103217684572)
-        channel_welcome = await self.fetch_channel(792013504969310258)
+        config = self.get_config()
+        ch_log_id = config["channel_log_id"]
+        ch_wl_id = config["channel_welcome_id"]
+
+        channel_log = await self.fetch_channel(ch_log_id)
+        channel_welcome = await self.fetch_channel(ch_wl_id)
         date = datetime.datetime.now()
         # Création du embed pour les logs
         embed_log = discord.Embed(
@@ -104,9 +107,12 @@ class AkaneBot(commands.Bot):
         un log pour les modérateurs indiquant qui est parti quand.
         """
         # Récupération  des channels et de la date
-        # FIXME : utiliser get_config
-        channel_log = await self.fetch_channel(1051971103217684572)
-        channel_welcome = await self.fetch_channel(792013504969310258)
+        config = self.get_config()
+        ch_log_id = config["channel_log_id"]
+        ch_wl_id = config["channel_welcome_id"]
+
+        channel_log = await self.fetch_channel(ch_log_id)
+        channel_welcome = await self.fetch_channel(ch_wl_id)
         date = datetime.datetime.now()
         # Création du embed pour les logs
         embed_log = discord.Embed(
