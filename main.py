@@ -12,6 +12,7 @@ class AkaneBot(commands.Bot):
         # Activer les intents pour que le bot suive ce qui se passe sur le serveur
         intents = discord.Intents.default()
         intents.members = True
+        intents.reactions = True
         # Ici pour qu'il lise les messages des utilisateurs (répondre à des pattern, des commandes)
         intents.message_content = True
         super().__init__(command_prefix="a!", intents=intents)
