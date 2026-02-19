@@ -80,7 +80,6 @@ class UtilitairesPublics(commands.Cog):
         status_list = config["status"]
         status_text = random.choice(list(status_list.values()))
         activite = discord.Game(name=status_text)
-        print(status_text)
 
         await self.bot.change_presence(status=discord.Status.online,activity=activite)
        
