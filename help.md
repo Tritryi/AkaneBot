@@ -13,6 +13,8 @@ Permet de kick l'utilisateur spécifié pour la raison donnée.
 Permet de timeout l'utilisateur spécifié durant le temps donné et pour la raison spécifiée.   
 - **a!unmute** [@utilisateur_à_unmute]
 Permet de unmute l'utilisateur spécifié.
+- **a!setup_roles**
+Créé un message servant d'ajout de rôle. Ecrit un message dans un salon spécifique, où, lorsqu'on réagit on obtient le rôle d'accès au serveur.
 
 ### Autres fonctionnalités :
 - **on_ready**
@@ -27,3 +29,10 @@ Le bot réagit à l'arrivée d'un utilisateur à la fois dans le général et en
 
 - **on_member_remove**
 Même chose que pour join mais pour le départ d'un utilisateur.
+
+- **on_member_update**
+Le bot surveille que les membres ne mettent pas des pseudos interdits. Gare à vous !
+
+- **change_status**
+Le bot change de status toutes les 4 heures.
+
