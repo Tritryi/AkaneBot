@@ -101,6 +101,57 @@ class Listener(commands.Cog):
         # dans le cas où une réaction concerne un autre message ou un autre emoji, on ignore   
         else:
             return
+        
+    @commands.Cog.listener()
+    async def on_member_update(self,before,after):
+        """
+        Listener qui détecte quand un membre change son profil. Ici, l'idée est de bloquer les pseudos interdits donc on va travailler sur 
+        nickname. Par contre, on peut aussi surveiller : les rôles, les photos de profil, etc.
+
+        Arguments : 
+            before : informations avant changement
+            after : informations après changement
+        """
+        # on définit des mots/caractères interdits, à vous d'en mettre autant que vous voulez
+        pseudos_interdits = ["merde","gueule","!"] # on va rester soft ici :)
+        for mot in pseudos_interdits:
+            if mot in after.nick.lower():
+                # si on trouve un mot interdit dans le pseudo, on prépare l'action en récupérant le channel de log
+                config = self.bot.get_config()
+                ch_log_id = config["channel_log_id"]
+                try:
+                    channel_log = await self.bot.fetch_channel(ch_log_id)
+                except discord.NotFound:
+                    print("Le channel n'a pas été trouvé")
+                try:
+                    # on rename l'utilisateur pour que son pseudo vulgaire n'apparaisse plus
+                    pseudo_invalide = after.nick
+                    await after.edit(nick="renomme toi :)", reason="Pseudo vulgaire !")
+
+                    # on log le rename pour que les modérateurs soient au courant du pseudo qui a été utilisé en précisant l'ancien pseudo
+                    embed_success = discord.Embed(
+                    title="⭕ Membre renommé car pseudo interdit",
+                    description=f"J'ai changé le pseudo du membre anciennement {before.nick} car il avait utilisé **{pseudo_invalide}** comme pseudo.",
+                    color= discord.Color.from_rgb(2, 87, 97)
+                    )
+                    try:
+                        await channel_log.send(embed=embed_success)
+                    except discord.HTTPException:
+                        print("échec de l'envoi du log.")
+
+                # si l'utilisateur ne peut pas être rename, on log quand même c'est important !
+                except discord.Forbidden:
+                    embed_error = discord.Embed(
+                        title="❌ Échec punition membre",
+                        description=f"Un membre s'est renommé {after.nick} mais son rôle est trop élevé pour que je le renomme...",
+                        color=discord.Color.from_rgb(158,92,5)
+                    )
+                    await channel_log.send(embed=embed_error)
+                    print("Cet utilisateur ne peut pas être renommé par le bot")
+                except discord.HTTPException:
+                    print("Le changement de pseudo a échoué")
+
+                
 
 
 
