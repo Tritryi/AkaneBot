@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import utils.config_management as cm
 
 
 class UtilitairesMod(commands.Cog):
@@ -37,7 +38,7 @@ class UtilitairesMod(commands.Cog):
             aucun
         """
         # chargement des variables depuis le fichier json
-        config = self.bot.get_config()
+        config = cm.get_config()
         msg_id = config["role_message_id"]
         channel_id = config["role_channel_id"]
         
@@ -67,7 +68,7 @@ class UtilitairesMod(commands.Cog):
                 color=discord.Color.from_rgb(237,100,26)
             )
             role_msg = await channel.send(embed=embed_role)
-            self.bot.update_config("role_message_id",role_msg.id)
+            cm.update_config("role_message_id",role_msg.id)
         except discord.HTTPException as e :
             print(f"L'envoi du message a échoué : {e}")
         # le bot n'a pas ces permissions

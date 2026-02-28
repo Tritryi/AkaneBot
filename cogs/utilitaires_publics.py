@@ -1,5 +1,6 @@
 import discord
 import random
+from utils.config_management import get_config
 from discord.ext import commands, tasks
 
 
@@ -76,7 +77,7 @@ class UtilitairesPublics(commands.Cog):
         Task qui a lieu une fois toutes les 4h. Permet simplement de changer le statut du bot parmis 4 status random définis dans le json.
         Nécessite le before_loop pour fonctionner puisqu'il utilise self.bot !!
         """
-        config = self.bot.get_config()
+        config = get_config()
         status_list = config["status"]
         status_text = random.choice(list(status_list.values()))
         activite = discord.Game(name=status_text)

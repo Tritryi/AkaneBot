@@ -2,6 +2,7 @@ import discord
 import datetime
 from datetime import timedelta
 from discord.ext import commands
+from utils.config_management import get_config
 
 
 class Moderation(commands.Cog):
@@ -22,7 +23,7 @@ class Moderation(commands.Cog):
             * : permet de traiter user comme un argument[1] et reason comme une chaine avec espaces
             reason : pourquoi l'utilisateur est expulsé
         """
-        config = self.bot.get_config()
+        config = get_config()
         channel_id = config["channel_log_id"]
         # Vérification que le rôle du bot est au dessus de l'utilisateur à kick
         if user.top_role >= ctx.me.top_role:
@@ -74,7 +75,7 @@ class Moderation(commands.Cog):
             until : durée EN MINUTES durant laquelle l'utilisateur doit être mute. Maximum 28 jours soit 40320 minutes
             reaso : raison du mute
         """
-        config = self.bot.get_config()
+        config = get_config()
         channel_id = config["channel_log_id"]
         if user.top_role >= ctx.me.top_role:
             return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
@@ -124,7 +125,7 @@ class Moderation(commands.Cog):
         Arguments:
             user: membre à unmute
         """
-        config = self.bot.get_config()
+        config = get_config()
         channel_id = config["channel_log_id"]
         try:
             # pour unmute, on utilise timeout avec une durée valant 0

@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from utils.config_management import get_config
 
 
 class Listener(commands.Cog):
@@ -18,7 +19,7 @@ class Listener(commands.Cog):
             payload : il s'agit d'un ensemble d'informations envoyées par discord à chaque fois qu'une réaction est ajoutée sur un message
         """
         # chargement des variables
-        config = self.bot.get_config()
+        config = get_config()
         msg_id = config["role_message_id"]
         ch_id = config["role_channel_id"]
         emoji_id = config["emoji_role_id"]
@@ -63,7 +64,7 @@ class Listener(commands.Cog):
             payload : il s'agit d'un ensemble d'informations envoyées par discord à chaque fois qu'une réaction est retirée sur un message
         """
         # chargement des variables
-        config = self.bot.get_config()
+        config = get_config()
         msg_id = config["role_message_id"]
         ch_id = config["role_channel_id"]
         emoji_id = config["emoji_role_id"]
@@ -117,7 +118,7 @@ class Listener(commands.Cog):
         for mot in pseudos_interdits:
             if mot in after.nick.lower():
                 # si on trouve un mot interdit dans le pseudo, on prépare l'action en récupérant le channel de log
-                config = self.bot.get_config()
+                config = get_config()
                 ch_log_id = config["channel_log_id"]
                 try:
                     channel_log = await self.bot.fetch_channel(ch_log_id)

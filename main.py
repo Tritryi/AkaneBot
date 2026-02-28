@@ -1,14 +1,13 @@
 import discord
 from discord.ext import commands
 import os, datetime, json
+import utils.config_management as cm
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=".config")
 
 # FIXME GENERAL : AJOUTER DES TRY-CATCH UN PEU PARTOUT POUR LA PROPRETÉ DU CODE
 class AkaneBot(commands.Bot):
     def __init__(self):
-        # Config relatives à certaines variables du code
-        self.config_path = "./config.json"
         # Activer les intents pour que le bot suive ce qui se passe sur le serveur
         intents = discord.Intents.default()
         intents.members = True
@@ -22,16 +21,6 @@ class AkaneBot(commands.Bot):
         # Récupérer le contenu de help
         with open("help.md") as f:
             self.helpcontent = f.read()
-        
-    def get_config(self):
-        with open(self.config_path, 'r') as f:
-            return json.load(f)
-        
-    def update_config(self, key, value):
-        data = self.get_config()
-        data[key] = value
-        with open(self.config_path, 'w') as f:
-            json.dump(data, f, indent=4)
 
 
     async def setup_hook(self):
@@ -81,7 +70,7 @@ class AkaneBot(commands.Bot):
         un log pour les modérateurs indiquant qui est arrivé quand.
         """
         # Récupération  des channels et de la date
-        config = self.get_config()
+        config = cm.get_config()
         ch_log_id = config["channel_log_id"]
         ch_wl_id = config["channel_welcome_id"]
 
@@ -107,7 +96,7 @@ class AkaneBot(commands.Bot):
         un log pour les modérateurs indiquant qui est parti quand.
         """
         # Récupération  des channels et de la date
-        config = self.get_config()
+        config = cm.get_config()
         ch_log_id = config["channel_log_id"]
         ch_wl_id = config["channel_welcome_id"]
 
