@@ -22,8 +22,11 @@ class UtilitairesMod(commands.Cog):
         if number == 0:
             ctx.send("Il me faut un nombre de messages !", delete_after=2)
             return
-        await ctx.channel.purge(limit=number+1)
-        await ctx.send(f"✅ J'ai supprimé {number} messages", delete_after=3)
+        try:
+            await ctx.channel.purge(limit=number+1)
+            await ctx.send(f"✅ J'ai supprimé {number} messages", delete_after=3)
+        except discord.HTTPException as e:
+            cm.logger(f"La suppression des messages a échouée : {e}", __file__)
 
 
     @commands.command()
@@ -43,10 +46,15 @@ class UtilitairesMod(commands.Cog):
         channel_id = config["role_channel_id"]
         
         # récupération du channel, fin s'il n'est pas trouvé
-        channel = await self.bot.fetch_channel(channel_id)
-        if not channel:
-            print("Salon introuvable")
-            return
+        try:
+            channel = await self.bot.fetch_channel(channel_id)
+        except discord.NotFound as e:
+            cm.logger(f"Problème avec l'id d'un des channels : {e}",__file__)
+        except discord.HTTPException: 
+            cm.logger(f"Erreur lors de la récupération d'un des channels : {e}",__file__)
+        except discord.Forbidden as e:
+            cm.logger(f"Le bot n'a pas les permissions suffisantes : {e}",__file__)
+
 
         # on regarde si ce message existe déjà, si c'est le cas la fonction s'arrête
         try:
@@ -58,7 +66,7 @@ class UtilitairesMod(commands.Cog):
         except discord.NotFound:
             print(f"Le message n'existe pas ou a été supprimé. On le renvoi.")
         except discord.Forbidden as e:
-            print(f"Permissions insuffisantes pour récupérer le message : {e}.")
+            cm.logger(f"Permissions insuffisantes pour aller chercher le message : {e}", __file__)
 
         # création du message, envoi et update de la configuration (on change l'identifiant du message)
         try:
@@ -70,30 +78,21 @@ class UtilitairesMod(commands.Cog):
             role_msg = await channel.send(embed=embed_role)
             cm.update_config("role_message_id",role_msg.id)
         except discord.HTTPException as e :
-            print(f"L'envoi du message a échoué : {e}")
+            cm.logger(f"Echec de l'envoi du message : {e}", __file__)
         # le bot n'a pas ces permissions
         except discord.Forbidden as e:
-            print(f"Permissions nécessaires insuffisantes : {e}")
+            cm.logger(f"Permissions nécessaires insuffisantes : {e}", __file__)
 
         # ajout de la réaction et toutes les erreurs que cela peut supposer
         # ici il y a un emoji personnalisé, sinon vous mettez simplement quelque chose comme '🤓'
         try:
             await role_msg.add_reaction('rin:966507969091084308')
         except discord.HTTPException as e:
-            print(f"L'ajout de la réaction a échoué : {e}")
-        except discord.Forbidden as e:
-            print(f"Permissions insuffisantes pour ajouter la réaction : {e}")
+            cm.logger(f"L'ajout de la réaction a échoué : {e}", __file__)
         except discord.NotFound as e:
-            print(f"Emoji introuvable : {e}")
+            cm.logger(f"Emoji introuvable : {e}",__file__)
         except TypeError as e:
-            print(f"Emoji invalide : {e}")
-
-
-
-
-
-
-
+            cm.logger(f"Emoji invalide : {e}", __file__)
     
 async def setup(bot):
     await bot.add_cog(UtilitairesMod(bot))
