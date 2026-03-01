@@ -38,8 +38,11 @@ class AkaneBot(commands.Bot):
         Paramètres de base, ce que fait le bot une fois qu'il est connecté
         """
         status = discord.CustomActivity(name="I'm on your side, no matter what happens")
-        await self.change_presence(status=discord.Status.online,activity=status)
-        print("Bot prêt !")
+        try:
+            await self.change_presence(status=discord.Status.online,activity=status)
+            print("Bot prêt !")
+        except TypeError as e:
+            cm.logger(e,__file__)
 
         # à décommenter si on veut voir quelles commandes sont chargées
         # print([command.name for command in self.commands])
@@ -74,8 +77,16 @@ class AkaneBot(commands.Bot):
         ch_log_id = config["channel_log_id"]
         ch_wl_id = config["channel_welcome_id"]
 
-        channel_log = await self.fetch_channel(ch_log_id)
-        channel_welcome = await self.fetch_channel(ch_wl_id)
+        try:
+            channel_log = await self.fetch_channel(ch_log_id)
+            channel_welcome = await self.fetch_channel(ch_wl_id)
+        except discord.NotFound as e:
+            cm.logger(f"Problème avec l'id d'un des channels : {e}",__file__)
+        except discord.HTTPException: 
+            cm.logger(f"Erreur lors de la récupération d'un des channels : {e}",__file__)
+        except discord.Forbidden as e:
+            cm.logger(f"Le bot n'a pas les permissions suffisantes : {e}",__file__)
+
         date = datetime.datetime.now()
         # Création du embed pour les logs
         embed_log = discord.Embed(
@@ -84,10 +95,19 @@ class AkaneBot(commands.Bot):
             color=discord.Color.from_rgb(61,247,32)
         )
         # Envoie des messages dans les channels respectifs
-        await channel_log.send(embed=embed_log)
+        try:
+            await channel_log.send(embed=embed_log)
+        except discord.HTTPException as e:
+            cm.logger(f"Echec de l'envoi du message dans {channel_log.id} : {e}", __file__)
+        except discord.Forbidden as e:
+            cm.logger(f"Le bot n'a pas le droit de parler dans {channel_log.id} : {e}")
+        
         # Ici, on mentionne l'utilisateur (id obligatoire !) et on utilise un emoji personnalisé
         # Pour les emojis personnalisés : "Emojis" sur votre discord developer portal, nom_emoji:id_emoji
-        await channel_welcome.send(f"<@{member.id}> nous a rejoint ! Bienvenu !! <:akane_smile:1471298088860913674>")
+        try:
+            await channel_welcome.send(f"<@{member.id}> nous a rejoint ! Bienvenu !! <:akane_smile:1471298088860913674>")
+        except discord.HTTPException as e:
+            cm.logger(f"Echec de l'envoi du message dans {channel_welcome.id} : {e}")
 
     
     async def on_member_remove(self,member: discord.User):
@@ -100,8 +120,16 @@ class AkaneBot(commands.Bot):
         ch_log_id = config["channel_log_id"]
         ch_wl_id = config["channel_welcome_id"]
 
-        channel_log = await self.fetch_channel(ch_log_id)
-        channel_welcome = await self.fetch_channel(ch_wl_id)
+        try:
+            channel_log = await self.fetch_channel(ch_log_id)
+            channel_welcome = await self.fetch_channel(ch_wl_id)
+        except discord.NotFound as e:
+            cm.logger(f"Problème avec l'id d'un des channels : {e}",__file__)
+        except discord.HTTPException: 
+            cm.logger(f"Erreur lors de la récupération d'un des channels : {e}",__file__)
+        except discord.Forbidden as e:
+            cm.logger(f"Le bot n'a pas les permissions suffisantes : {e}",__file__)
+        
         date = datetime.datetime.now()
         # Création du embed pour les logs
         embed_log = discord.Embed(
@@ -110,18 +138,19 @@ class AkaneBot(commands.Bot):
             color=discord.Color.from_rgb(240,45,38)
         )
         # Envoie des messages dans les channels respectifs
-        await channel_log.send(embed=embed_log)
+        try:
+            await channel_log.send(embed=embed_log)
+        except discord.HTTPException as e:
+            cm.logger(f"Echec de l'envoi du message dans {channel_log.id} : {e}", __file__)
+        except discord.Forbidden as e:
+            cm.logger(f"Le bot n'a pas le droit de parler dans {channel_log.id} : {e}")
         # Ici, on mentionne l'utilisateur (id obligatoire !) et on utilise un emoji personnalisé
         # Pour les emojis personnalisés : "Emojis" sur votre discord developer portal, nom_emoji:id_emoji
-        await channel_welcome.send(f"<@{member.id}> nous a malheureusement quittés... <:akane_cry:1471304232605847839>")
+        try:
+            await channel_welcome.send(f"<@{member.id}> nous a malheureusement quittés... <:akane_cry:1471304232605847839>")
+        except discord.HTTPException as e:
+            cm.logger(f"Echec de l'envoi du message dans {channel_welcome.id} : {e}")
 
-    
-    
-
-    # @clear.error
-    # async def clear_error(self,ctx,error):
-    #     if isinstance(error,commands.MissingPermissions):
-    #         ctx.send("Désolée mais vous ne pouvez pas faire ça !",delete_after=2)
 
 
         
