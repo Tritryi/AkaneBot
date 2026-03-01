@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-from utils.config_management import get_config
-
+import utils.config_management as cm
 
 class Listener(commands.Cog):
     def __init__(self,bot):
@@ -19,7 +18,7 @@ class Listener(commands.Cog):
             payload : il s'agit d'un ensemble d'informations envoyées par discord à chaque fois qu'une réaction est ajoutée sur un message
         """
         # chargement des variables
-        config = get_config()
+        config = cm.get_config()
         msg_id = config["role_message_id"]
         ch_id = config["role_channel_id"]
         emoji_id = config["emoji_role_id"]
@@ -40,12 +39,12 @@ class Listener(commands.Cog):
                 try:
                     # en théorie on peut mettre une raison mais ça n'a pas vraiment d'intérêt
                     await payload.member.add_roles(role1,role2)
-                except discord.Forbidden:
-                    print("Permissions insuffisantes pour ajouter ces rôles")
-                except discord.HTTPException:
-                    print("Échec de l'ajout des rôles")
+                except discord.Forbidden as e:
+                    cm.logger(f"Permissions insuffisantes pour ajouter ces rôles : {e}", __file__)
+                except discord.HTTPException as e:
+                    print(f"Échec de l'ajout des rôles : {e}", __file__)
             else:
-                print("Un des rôles n'a pas pu être récupéré")
+                cm.logger("Un des id de rôle est incorrect, vérifiez votre fichier config.json",__file__)
                 return
             
         # dans le cas où une réaction concerne un autre message ou un autre emoji, on ignore   
@@ -64,7 +63,7 @@ class Listener(commands.Cog):
             payload : il s'agit d'un ensemble d'informations envoyées par discord à chaque fois qu'une réaction est retirée sur un message
         """
         # chargement des variables
-        config = get_config()
+        config = cm.get_config()
         msg_id = config["role_message_id"]
         ch_id = config["role_channel_id"]
         emoji_id = config["emoji_role_id"]
@@ -72,7 +71,7 @@ class Listener(commands.Cog):
         id_r2 = config["id_role2"]
 
         # Si la réaction concerne bien le message de setup des roles et que c'est le bon emoji ajouté, alors 
-        # on récupère les rôles que l'on veut ajouter
+        # on récupère les rôles que l'on veut retirer
         if payload.channel_id == ch_id and \
            payload.message_id == msg_id and \
            payload.emoji.id == emoji_id:
@@ -80,9 +79,11 @@ class Listener(commands.Cog):
             # remove ne renvoie pas les mêmes informations que add
             guild = self.bot.get_guild(payload.guild_id)
             if guild == None:
+                cm.logger("Le serveur n'a pas pu être récupéré", __file__)
                 return
             member = guild.get_member(payload.user_id)
             if member == None:
+                cm.logger("L'utilisateur n'a pas pu être récupéré", __file__)
                 return
             
             role1 = guild.get_role(id_r1)
@@ -92,12 +93,12 @@ class Listener(commands.Cog):
             if role1 and role2:
                 try:
                     await member.remove_roles(role1,role2)
-                except discord.Forbidden:
-                    print("Permissions insuffisantes pour retirer ces rôles")
-                except discord.HTTPException:
-                    print("Échec de la suppression des rôles")
+                except discord.Forbidden as e:
+                    cm.logger(f"Permissions insuffisantes pour retirer ces rôles : {e}", __file__)
+                except discord.HTTPException as e:
+                    cm.logger(f"Échec de la suppression des rôles : {e}", __file__)
             else:
-                print("Un des rôles n'a pas pu être récupéré")
+                cm.logger(f"Un des rôles n'a pas pu être récupéré", __file__)
                 return
         # dans le cas où une réaction concerne un autre message ou un autre emoji, on ignore   
         else:
@@ -121,12 +122,12 @@ class Listener(commands.Cog):
         for mot in pseudos_interdits:
             if mot in after.nick.lower():
                 # si on trouve un mot interdit dans le pseudo, on prépare l'action en récupérant le channel de log
-                config = get_config()
+                config = cm.get_config()
                 ch_log_id = config["channel_log_id"]
                 try:
                     channel_log = await self.bot.fetch_channel(ch_log_id)
-                except discord.NotFound:
-                    print("Le channel n'a pas été trouvé")
+                except discord.NotFound as e:
+                    cm.logger(f"Le channel n'a pas été trouvé : {e}", __file__)
                 try:
                     # on rename l'utilisateur pour que son pseudo vulgaire n'apparaisse plus
                     pseudo_invalide = after.nick
@@ -140,20 +141,20 @@ class Listener(commands.Cog):
                     )
                     try:
                         await channel_log.send(embed=embed_success)
-                    except discord.HTTPException:
-                        print("échec de l'envoi du log.")
+                    except discord.HTTPException as e:
+                        cm.logger(f"échec de l'envoi du log : {e}", __file__)
 
                 # si l'utilisateur ne peut pas être rename, on log quand même c'est important !
-                except discord.Forbidden:
+                except discord.Forbidden as e:
                     embed_error = discord.Embed(
                         title="❌ Échec punition membre",
                         description=f"Un membre s'est renommé {after.nick} mais son rôle est trop élevé pour que je le renomme...",
                         color=discord.Color.from_rgb(158,92,5)
                     )
                     await channel_log.send(embed=embed_error)
-                    print("Cet utilisateur ne peut pas être renommé par le bot")
-                except discord.HTTPException:
-                    print("Le changement de pseudo a échoué")
+                    cm.logger(f"Cet utilisateur ne peut pas être renommé par le bot : {e}", __file__)
+                except discord.HTTPException as e:
+                    cm.logger(f"Le changement de pseudo a échoué : {e}", __file__)
 
                 
 
