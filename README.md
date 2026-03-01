@@ -32,12 +32,7 @@ Je conseille d'utiliser un environnement virtuel python, pour ce faire :
 Avec tout cela, votre environnement python est prêt.
 
 ### Environnement nécessaire (Windows)
-Pour Windows, nous allons réaliser globalement les mêmes manipulations que sur Linux : 
->
->
->
->
->
+*à venir*
 
 ### Variables d'environnement
 Le code fourni propose d'aller chercher les variables d'environnement dans un fichier nommé `.config` que vous devrez créer vous même.
@@ -67,6 +62,22 @@ Pour lancer le bot, rien de plus simple, il vous suffit de taper la commande sui
 
 ⚠️ Le bot n'est actif que lorsque votre script tourne !! Si vous coupez le script ou éteignez votre ordinateur, le bot sera instantanément hors ligne. 
 Comment faire pour que votre bot tourne 24h/24 ? Cela dépasse un peu l'objectif de mon application, je vous laisse vous renseigner.
+
+# Alternative : docker
+Si vous êtes un peu habitué de l'informatique et que vous avez un minimum de connaissances sur docker vous pouvez utiliser cette alternative. Ici, la procédure à suivre sera la suivante.
+
+Récupérez l'image docker du bot avec la commande suivante : 
+```
+docker docker pull tritryi/discord-bot:latest
+```
+
+Ensuite, créez le conteneur, attention ici à bien respecter la partie token ou le conteneur va crasher !
+```
+docker run -d -e DISCORD_TOKEN="[votre_token]" --name [nom_conteneur]
+```
+
+Normalement dès cette commande utilisée votre bot est en ligne ! Maintenant comment personnaliser tout ça ?
+Malheureusement en utilisant Docker on ne peut pas vraiment personnaliser le code, par contre vous aurez un bot qui fonctionne.
 
 
 # Détails techniques
