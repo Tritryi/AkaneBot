@@ -78,6 +78,7 @@ docker run -d -e DISCORD_TOKEN="[votre_token]" --name [nom_conteneur]
 
 Normalement dès cette commande utilisée votre bot est en ligne ! Maintenant comment personnaliser tout ça ?
 Malheureusement en utilisant Docker on ne peut pas vraiment personnaliser le code, par contre vous aurez un bot qui fonctionne.
+La partie Docker est surtout pour moi et mon portfolio ;-)
 
 
 # Détails techniques
