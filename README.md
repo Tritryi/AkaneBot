@@ -86,8 +86,9 @@ La partie Docker est surtout pour moi et mon portfolio ;-)
 Quelques points pour les personnes n'étant pas développeurs.
 
 #### Qu'est-ce que les try;expect
-À beaucoup d'endroits dans le code, vous verrez des parties avec un bloc **try** et plusieurs blocs **expect**. Ça peut avoir l'air pompeux mais c'est très utile. C'est notamment cela qui permet de ne pas faire crash totalement votre bot si un problème survient. De plus, s'il y a un problème, il sera expliqué dans votre console.
-Par contre ce n'est pas exhaustif, beaucoup d'erreurs sont possibles et j'ai pu en oublier quelques unes.
+À beaucoup d'endroits dans le code, vous verrez des parties avec un bloc **try** et plusieurs blocs **expect**. Ça peut avoir l'air pompeux mais c'est très utile. C'est notamment cela qui permet de ne pas faire crash totalement votre bot si un problème survient. De plus, s'il y a un problème, il sera expliqué dans le fichier `logs/bot.log`. Si vous ne comprenez pas l'erreur, demandez à un ami ou simplement à une IA. La version que je mets à disposition ici n'a (normalement) pas de bug donc ça peut venir d'une de vos modifications.
+
+Par contre ce n'est pas exhaustif, beaucoup d'erreurs sont possibles et j'ai pu en oublier quelques unes qui s'afficheront alors dans la console.
 
 ### Structure du code
 
@@ -95,16 +96,26 @@ Par contre ce n'est pas exhaustif, beaucoup d'erreurs sont possibles et j'ai pu 
 ./
     cogs/
     img/
+    logs/
+    utils/
+    .dockerignore
     .gitignore
     config.json
+    Dockerfile
     help.md
+    LICENSE
     main.py
 ```
 - **cogs/** : ensemble de fichiers python permettant de définir les commandes du bot, on range les commandes par catégories.
 - **img/** : dossiers des images, vous pouvez en changer le contenu elles sont là à titre d'exemple comme pour faire envoyer une image au bot et illustrer ce repository.
+- **logs/** : dossier contenant le fichier de log principal.
+- **utils/** : dossier contenant une bibliothèque utilitaire créée pour les fonctions redondantes.
+- **.dockerignore** : permet à docker d'ignorer certains fichiers lorsque je créé une image.
 - **.gitignore** : proposition de gitignore, à vous de le changer comme vous le voulez (pour les développeurs principalement).
 - **config.json** : fichier de configuration qui contient les variables récurrentes comme les identifiants de salons, de rôles, les status, etc.
+- **Dockerfile** :  sert à la création de l'image Docker.
 - **help.md** : fichier lu par le bot pour expliquer aux utilisateurs son fonctionnement, il contient un ensemble d'explications qui seront envoyés par message privé à un utilisateur en tapant la commande `a!help`.
+- **LICENSE** : licence github.
 - **main.py** : script principal, c'est lui qu'on éxecute pour lancer le bot. Il contient la déclaration du bot, le lancement de celui-ci ainsi que quelques fonctions de base comme répondre aux messages.
 
 
