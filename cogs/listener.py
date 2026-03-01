@@ -113,6 +113,9 @@ class Listener(commands.Cog):
             before : informations avant changement
             after : informations après changement
         """
+        # si autre chose que le nom change, on n'agit pas
+        if before.nick == after.nick:
+            return
         # on définit des mots/caractères interdits, à vous d'en mettre autant que vous voulez
         pseudos_interdits = ["merde","gueule","!"] # on va rester soft ici :)
         for mot in pseudos_interdits:
