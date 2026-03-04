@@ -5,7 +5,6 @@ import utils.config_management as cm
 from dotenv import load_dotenv
 load_dotenv(dotenv_path=".config")
 
-# FIXME GENERAL : AJOUTER DES TRY-CATCH UN PEU PARTOUT POUR LA PROPRETÉ DU CODE
 class AkaneBot(commands.Bot):
     def __init__(self):
         # Activer les intents pour que le bot suive ce qui se passe sur le serveur
