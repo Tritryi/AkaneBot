@@ -1,3 +1,4 @@
 .config
 __pycache/
 *.pyc
+scripts/createdocker.sh
