@@ -2,7 +2,7 @@ import discord
 import datetime
 from datetime import timedelta
 from discord.ext import commands
-from utils.config_management import get_config
+import utils.config_management as cm
 
 
 class Moderation(commands.Cog):
@@ -23,7 +23,7 @@ class Moderation(commands.Cog):
             * : permet de traiter user comme un argument[1] et reason comme une chaine avec espaces
             reason : pourquoi l'utilisateur est expulsé
         """
-        config = get_config()
+        config = cm.get_config()
         channel_id = config["channel_log_id"]
         # Vérification que le rôle du bot est au dessus de l'utilisateur à kick
         if user.top_role >= ctx.me.top_role:
@@ -33,7 +33,7 @@ class Moderation(commands.Cog):
         try:
             await user.send(f"Tu as été expulsé de {ctx.guild.name} car {reason}. Désolée :-(")
         except discord.HTTPException as e:
-            print(f"Impossible de dm cet utilisateur : {e}")
+            cm.logger(f"Impossible de dm cet utilisateur : {e}", __file__)
 
         # On essaie de kick l'utilisateur
         try:
@@ -50,14 +50,14 @@ class Moderation(commands.Cog):
                 )   
                 await channel.send(embed=embed)
 
-            except discord.NotFound:
-                print("Le kick a fonctionné mais impossible de trouver le channel de log")
+            except discord.NotFound as e:
+                cm.logger(f"Le kick a fonctionné mais impossible de trouver le channel de log : {e}", __file__)
         
         # Exceptions en cas de problème de droits ou autres
-        except discord.Forbidden:
-            await ctx.send("Malheureusement, je n'ai pas le droit de faire ceci !")
-        except discord.HTTPException:
-            await ctx.send("Je n'ai pas réussi à l'expulser...")
+        except discord.Forbidden as e:
+            cm.logger(f"Permissions insuffisantes : {e}", __file__)
+        except discord.HTTPException as e:
+            cm.logger(f"L'expulsion a échoué : {e}", __file__)
 
         
 
@@ -75,7 +75,7 @@ class Moderation(commands.Cog):
             until : durée EN MINUTES durant laquelle l'utilisateur doit être mute. Maximum 28 jours soit 40320 minutes
             reaso : raison du mute
         """
-        config = get_config()
+        config = cm.get_config()
         channel_id = config["channel_log_id"]
         if user.top_role >= ctx.me.top_role:
             return await ctx.send("Désolée ! cet utilisateur a une meilleure position que moi...")
@@ -101,17 +101,17 @@ class Moderation(commands.Cog):
                 await channel_log.send(embed=embed)
 
             # exception en cas de channel non trouvé
-            except discord.NotFound:
+            except discord.NotFound as e:
                 await ctx.send("Je n'ai pas réussi à logger l'action...")
-                print("Le timeout a fonctionné mais impossible de trouver le channel de log")
+                cm.logger(f"Le timeout a fonctionné mais impossible de trouver le channel de log :  {e}", __file__)
 
         # exceptions en cas de soucis sur le timeout
         except discord.HTTPException as e:
             await ctx.send("Je n'ai pas réussi à effectuer le timeout...")
-            print(f"Une erreur est survenue du côté de discord : {e}")
+            cm.logger(f"Une erreur est survenue du côté de discord : {e}", __file__)
         except TypeError as e :
             await ctx.send("Un problème dans la définition de la date, demandez à l'administrateur...")
-            print(f"La date passée n'a pas un fuseau horaire bien défini : {e}")
+            cm.logger(f"La date passée n'a pas un fuseau horaire bien défini : {e}", __file__)
 
     @commands.command()
     @commands.has_permissions(moderate_members=True)
@@ -125,7 +125,7 @@ class Moderation(commands.Cog):
         Arguments:
             user: membre à unmute
         """
-        config = get_config()
+        config = cm.get_config()
         channel_id = config["channel_log_id"]
         try:
             # pour unmute, on utilise timeout avec une durée valant 0
@@ -143,14 +143,14 @@ class Moderation(commands.Cog):
                 await channel_log.send(embed=embed)
 
             # problème de channel comme d'habitude
-            except discord.NotFound:
+            except discord.NotFound as e:
                 await ctx.send("Je n'ai pas réussi à logger l'action...")
-                print("Le timeout a fonctionné mais impossible de trouver le channel de log")
+                cm.logger(f"Le timeout a fonctionné mais impossible de trouver le channel de log : {e}", __file__)
 
         # exception générale si le untimeout ne réussit pas
         except discord.HTTPException as e:
             await ctx.send("Le untimeout n'a pas fonctionné")
-            print(f"Une erreur est survenue du côté de discord : {e}")
+            cm.logger(f"Une erreur est survenue du côté de discord : {e}", __file__)
         
 
 
