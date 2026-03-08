@@ -2,6 +2,7 @@ import discord
 import random
 from utils.config_management import get_config
 from discord.ext import commands, tasks
+import utils.config_management as cm
 
 
 class UtilitairesPublics(commands.Cog):
@@ -95,7 +96,33 @@ class UtilitairesPublics(commands.Cog):
         await self.bot.wait_until_ready()
 
 
-    
+    @commands.command()
+    async def pfp(self,ctx, user:discord.Member=None):
+        """
+        Permet d'afficher l'avatar d'un utilisateur. Si un utilisateur est mentionné, on affiche son avatar, sinon le bot affiche son propre avatar
+
+        Arguments : 
+            user : l'utilisateur dont on veut l'avateur (peut être NULL)
+        """
+        # Récupération de la bonne url avec un opérateur ternaire
+        avatar = self.bot.user.avatar if not user else user.avatar.url
+        
+        # création de l'embed
+        e = discord.Embed(
+            color=discord.Color.from_rgb(109, 110, 151)
+        )
+
+        e.set_image(url=avatar)
+        
+        # envoi de l'avatar
+        try:
+            await ctx.send(embed=e)
+        except discord.HTTPException as e:
+            cm.logger(f"L'envoi de l'avatar a échoué : {e}", __file__)
+
+           
+        
+        
     
     
 async def setup(bot):
