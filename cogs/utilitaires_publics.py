@@ -1,6 +1,5 @@
 import discord
 import random
-from utils.config_management import get_config
 from discord.ext import commands, tasks
 import utils.config_management as cm
 
@@ -32,8 +31,12 @@ class UtilitairesPublics(commands.Cog):
             description=helpcontent,
             color=discord.Color.from_rgb(63,60,107)
         )
+        
         await ctx.send("Je t'ai envoyé l'aide en mp !", delete_after=2) 
-        await ctx.author.send(embed=embed)
+        try: 
+            await ctx.author.send(embed=embed)
+        except discord.HTTPException as e:
+            cm.logger(f"Impossible de dm cet utilisateur : {e}", __file__)
 
     @commands.command()
     async def pres(self,ctx):
@@ -69,8 +72,10 @@ class UtilitairesPublics(commands.Cog):
         # Boucle permettant d'ajouter toutes nos informations
         for new_data in datas:
             embed.add_field(name=new_data,value=datas[new_data],inline=False)
-
-        await ctx.send(embed=embed,files=files_to_send)
+        try:
+            await ctx.send(embed=embed,files=files_to_send)
+        except discord.HTTPException as e:
+            cm.logger(f"L'envoi du message a échoué : {e}", __file__)
 
     @tasks.loop(hours=4.0)
     async def change_status(self):
@@ -78,7 +83,7 @@ class UtilitairesPublics(commands.Cog):
         Task qui a lieu une fois toutes les 4h. Permet simplement de changer le statut du bot parmis 4 status random définis dans le json.
         Nécessite le before_loop pour fonctionner puisqu'il utilise self.bot !!
         """
-        config = get_config()
+        config = cm.get_config()
         status_list = config["status"]
         status_text = random.choice(list(status_list.values()))
         activite = discord.Game(name=status_text)
