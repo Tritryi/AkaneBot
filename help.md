@@ -15,6 +15,8 @@ Permet de timeout l'utilisateur spécifié durant le temps donné et pour la rai
 Permet de unmute l'utilisateur spécifié.
 - **a!setup_roles**
 Créé un message servant d'ajout de rôle. Ecrit un message dans un salon spécifique, où, lorsqu'on réagit on obtient le rôle d'accès au serveur.
+- **a!pfp**
+Envoie la photo de profil de la personne mentionnée. En l'abscence de mention, c'est celle du bot qui est envoyé.
 
 ### Autres fonctionnalités :
 - **on_ready**
