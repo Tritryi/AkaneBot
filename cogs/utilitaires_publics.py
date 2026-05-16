@@ -86,10 +86,10 @@ class UtilitairesPublics(commands.Cog):
         config = cm.get_config()
         status_list = config["status"]
         status_text = random.choice(list(status_list.values()))
-        activite = discord.Game(name=status_text)
+        activite = discord.Game(status_text)
 
         await self.bot.change_presence(status=discord.Status.online,activity=activite)
-       
+
 
     @change_status.before_loop
     async def before_change_status(self):
@@ -125,7 +125,6 @@ class UtilitairesPublics(commands.Cog):
         except discord.HTTPException as e:
             cm.logger(f"L'envoi de l'avatar a échoué : {e}", __file__)
 
-           
         
         
     

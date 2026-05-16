@@ -31,12 +31,12 @@ class AkaneBot(commands.Bot):
                 except Exception as e:
                     print(f"{extension_name} n'a pas pu être chargée : {e}")
         
- 
+
     async def on_ready(self):
         """
         Paramètres de base, ce que fait le bot une fois qu'il est connecté
         """
-        status = discord.CustomActivity(name="I'm on your side, no matter what happens")
+        status = discord.Game("I'm on your side, no matter what happens")
         try:
             await self.change_presence(status=discord.Status.online,activity=status)
             print("Bot prêt !")
